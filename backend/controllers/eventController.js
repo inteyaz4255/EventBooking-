@@ -196,8 +196,29 @@ const deleteEvent = async (req, res) => {
 };
 
 
+const getMyEvents = async (req, res) => {
+  try {
+    const events = await Event.find({
+      organizer: req.user.id
+    }).sort({ createdAt: -1 });
+
+    res.status(200).json({
+      message: "Organizer events fetched successfully",
+      totalEvents: events.length,
+      events
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: error.message
+    });
+  }
+};
 
 
 
 
-module.exports = {createEvent,getAllEvents,getEventById,updateEvent,deleteEvent}
+
+
+
+module.exports = {createEvent,getAllEvents,getEventById,updateEvent,deleteEvent,getMyEvents}
